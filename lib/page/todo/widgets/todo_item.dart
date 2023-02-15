@@ -31,7 +31,6 @@ class TodoItem extends StatelessWidget {
             padding: const EdgeInsets.all(0),
             margin: const EdgeInsets.symmetric(vertical: 12),
             child: Checkbox(
-              activeColor: Colors.amber,
               value: todo.isDone,
               onChanged: (bool? value) {
                 onChangeIsDone(todo.id);

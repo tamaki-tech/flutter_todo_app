@@ -11,23 +11,26 @@ class TodoPage extends StatefulWidget {
 
 class _TodoPageState extends State<TodoPage> {
   final TextEditingController _controller = TextEditingController();
-
-  List<Todo> _todos = [];
+  final List<Todo> _todos = [];
 
   void _addTodo(String todoName) {
-    _todos = [..._todos, Todo(id: _todos.length + 1, name: todoName)];
-
     setState(() {
+      _todos.add(Todo(id: _todos.length + 1, name: todoName));
       _controller.clear();
     });
   }
 
   void _deleteTodo(int id) {
-    print('Clicked on delete icon');
+    setState(() {
+      _todos.removeWhere((todo) => todo.id == id);
+    });
   }
 
   void _changeIsDone(int id) {
-    print('Clicked on check box');
+    setState(() {
+      Todo todo = _todos.singleWhere((todo) => todo.id == id);
+      todo.isDone = !todo.isDone;
+    });
   }
 
   @override
