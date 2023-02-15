@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_app/model/Todo.dart';
+import 'package:flutter_todo_app/page/todo/widgets/todo_item.dart';
 
 class TodoPage extends StatefulWidget {
   const TodoPage({super.key});
@@ -10,16 +12,22 @@ class TodoPage extends StatefulWidget {
 class _TodoPageState extends State<TodoPage> {
   final TextEditingController _controller = TextEditingController();
 
-  String _editText = "";
-  List<String> _todos = [];
+  List<Todo> _todos = [];
 
-  void addTodoItem() {
-    _todos = [..._todos, _editText];
+  void _addTodo(String todoName) {
+    _todos = [..._todos, Todo(id: _todos.length + 1, name: todoName)];
 
-    // テキストフォームをクリア
     setState(() {
       _controller.clear();
     });
+  }
+
+  void _deleteTodo(int id) {
+    print('Clicked on delete icon');
+  }
+
+  void _changeIsDone(int id) {
+    print('Clicked on check box');
   }
 
   @override
@@ -28,6 +36,7 @@ class _TodoPageState extends State<TodoPage> {
         appBar: AppBar(
           title: const Text("ToDo"),
         ),
+        backgroundColor: Colors.white,
         body: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -35,12 +44,9 @@ class _TodoPageState extends State<TodoPage> {
               padding: const EdgeInsets.all(8.0),
               child: TextField(
                 controller: _controller,
-                onChanged: (String? value) {
-                  _editText = value!;
-                },
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
-                    onPressed: () => addTodoItem(),
+                    onPressed: () => _addTodo(_controller.text),
                     icon: const Icon(Icons.add),
                   ),
                 ),
@@ -50,7 +56,11 @@ class _TodoPageState extends State<TodoPage> {
               shrinkWrap: true,
               itemCount: _todos.length,
               itemBuilder: (BuildContext context, int index) {
-                return Card(child: ListTile(title: Text(_todos[index])));
+                return TodoItem(
+                  todo: _todos[index],
+                  onDeleteTodo: _deleteTodo,
+                  onChangeIsDone: _changeIsDone,
+                );
               },
             )
           ],
