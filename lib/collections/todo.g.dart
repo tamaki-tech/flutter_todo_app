@@ -68,9 +68,10 @@ Todo _todoDeserialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = Todo();
+  final object = Todo(
+    isDone: reader.readBoolOrNull(offsets[0]) ?? false,
+  );
   object.id = id;
-  object.isDone = reader.readBool(offsets[0]);
   object.name = reader.readString(offsets[1]);
   return object;
 }
@@ -83,7 +84,7 @@ P _todoDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readBool(offset)) as P;
+      return (reader.readBoolOrNull(offset) ?? false) as P;
     case 1:
       return (reader.readString(offset)) as P;
     default:

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_app/collections/todo.dart';
 import 'package:flutter_todo_app/repositories/todo_repository.dart';
-import 'package:flutter_todo_app/schemas/Todo.dart';
 import 'package:flutter_todo_app/pages/todo/widgets/todo_item.dart';
 
 class TodoPage extends StatefulWidget {
@@ -16,17 +16,33 @@ class _TodoPageState extends State<TodoPage> {
   final TextEditingController _controller = TextEditingController();
   final List<Todo> _todos = [];
 
-  void _addTodo(String todoName) {
+  @override
+  void initState() {
+    super.initState();
+
+    widget.todoRepository.todoStream.listen(_refresh);
+
+    () async {
+      _refresh(await widget.todoRepository.findTodos());
+    }();
+  }
+
+  void _refresh(List<Todo> todos) {
+    if (!mounted) return;
+
     setState(() {
-      _todos.add(Todo(id: _todos.length + 1, name: todoName));
-      _controller.clear();
+      _todos
+        ..clear()
+        ..addAll(todos);
     });
   }
 
-  void _deleteTodo(int id) {
-    setState(() {
-      _todos.removeWhere((todo) => todo.id == id);
-    });
+  Future<void> _addTodo(String todoName) async {
+    await widget.todoRepository.addTodo(todoName);
+  }
+
+  Future<void> _deleteTodo(int id) async {
+    await widget.todoRepository.deleteTodo(id);
   }
 
   void _changeIsDone(int id) {
