@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_app/repositories/todo_repository.dart';
 import 'package:flutter_todo_app/schemas/Todo.dart';
 import 'package:flutter_todo_app/pages/todo/widgets/todo_item.dart';
 
 class TodoPage extends StatefulWidget {
-  const TodoPage({super.key});
+  const TodoPage({super.key, required this.todoRepository});
+
+  final TodoRepository todoRepository;
 
   @override
   State<TodoPage> createState() => _TodoPageState();
