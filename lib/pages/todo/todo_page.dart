@@ -20,12 +20,13 @@ class _TodoPageState extends State<TodoPage> {
   void initState() {
     super.initState();
 
-    // Todo一覧の監視
-    widget.todoRepository.todoStream.listen(_refreshTodos);
-
+    // Todo一覧取得
     Future(() async {
       _refreshTodos(await widget.todoRepository.findTodos());
     });
+
+    // Todo一覧の監視
+    widget.todoRepository.todoStream.listen(_refreshTodos);
   }
 
   void _refreshTodos(List<Todo> todos) {
