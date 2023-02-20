@@ -1,0 +1,1 @@
+class NoResultFoundException implements Exception {}

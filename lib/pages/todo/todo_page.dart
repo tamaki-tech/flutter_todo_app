@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/model/collections/todo.dart';
-import 'package:flutter_todo_app/model/repositories/todo_repository.dart';
+import 'package:flutter_todo_app/model/services/todo_service.dart';
 import 'package:flutter_todo_app/pages/todo/widgets/todo_item.dart';
 
 class TodoPage extends StatefulWidget {
-  const TodoPage({super.key, required this.todoRepository});
+  const TodoPage({
+    super.key,
+    required this.todoService,
+  });
 
-  final TodoRepository todoRepository;
+  // TODO DIコンテナで管理できないか？
+  final TodoService todoService;
 
   @override
   State<TodoPage> createState() => _TodoPageState();
@@ -22,11 +26,11 @@ class _TodoPageState extends State<TodoPage> {
 
     // Todo一覧取得
     Future(() async {
-      _refreshTodos(await widget.todoRepository.findTodos());
+      _refreshTodos(await widget.todoService.findTodos());
     });
 
     // Todo一覧の監視
-    widget.todoRepository.todoStream.listen(_refreshTodos);
+    widget.todoService.getTodoStream().listen(_refreshTodos);
   }
 
   void _refreshTodos(List<Todo> todos) {
@@ -38,7 +42,7 @@ class _TodoPageState extends State<TodoPage> {
   }
 
   Future<void> _addTodo(String todoName) async {
-    await widget.todoRepository.addTodo(todoName);
+    await widget.todoService.addTodo(todoName);
 
     setState(() {
       _controller.clear();
@@ -46,11 +50,11 @@ class _TodoPageState extends State<TodoPage> {
   }
 
   Future<void> _deleteTodo(int id) async {
-    await widget.todoRepository.deleteTodo(id);
+    await widget.todoService.deleteTodo(id);
   }
 
-  Future<void> _changeIsDone(Todo todo) async {
-    await widget.todoRepository.updateTodo(todo, !todo.isDone);
+  Future<void> _changeIsDone(int id) async {
+    await widget.todoService.changeIsDone(id);
   }
 
   @override

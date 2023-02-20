@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo_app/model/services/todo_service.dart';
 import 'package:flutter_todo_app/pages/todo/todo_page.dart';
 import 'package:flutter_todo_app/model/repositories/todo_repository.dart';
 import 'package:isar/isar.dart';
@@ -16,7 +17,7 @@ class App extends StatelessWidget {
         primarySwatch: Colors.purple,
       ),
       home: TodoPage(
-        todoRepository: TodoRepository(isar: isar),
+        todoService: TodoService(todoRepository: TodoRepository(isar: isar)),
       ),
     );
   }
