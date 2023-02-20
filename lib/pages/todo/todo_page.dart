@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo_app/collections/todo.dart';
-import 'package:flutter_todo_app/repositories/todo_repository.dart';
+import 'package:flutter_todo_app/model/collections/todo.dart';
+import 'package:flutter_todo_app/model/repositories/todo_repository.dart';
 import 'package:flutter_todo_app/pages/todo/widgets/todo_item.dart';
 
 class TodoPage extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo_app/app.dart';
-import 'package:flutter_todo_app/collections/todo.dart';
+import 'package:flutter_todo_app/app/app.dart';
+import 'package:flutter_todo_app/model/collections/todo.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 

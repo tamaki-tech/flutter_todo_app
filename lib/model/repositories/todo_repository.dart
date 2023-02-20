@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter_todo_app/collections/todo.dart';
+import 'package:flutter_todo_app/model/collections/todo.dart';
 import 'package:isar/isar.dart';
 
 class TodoRepository {
