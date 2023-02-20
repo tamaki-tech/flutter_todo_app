@@ -6,8 +6,6 @@ import 'package:isar/isar.dart';
 class TodoRepository {
   TodoRepository({required this.isar}) {
     isar.todos.watchLazy().listen((_) async {
-      if (!isar.isOpen) return;
-      if (_todoController.isClosed) return;
       _todoController.sink.add(await findTodos());
     });
   }
