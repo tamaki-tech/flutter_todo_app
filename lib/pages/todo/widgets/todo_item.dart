@@ -4,7 +4,7 @@ import 'package:flutter_todo_app/collections/todo.dart';
 class TodoItem extends StatelessWidget {
   final Todo todo;
   final void Function(int) onDeleteTodo;
-  final void Function(int) onChangeIsDone;
+  final void Function(Todo) onChangeIsDone;
 
   const TodoItem({
     super.key,
@@ -33,7 +33,7 @@ class TodoItem extends StatelessWidget {
             child: Checkbox(
               value: todo.isDone,
               onChanged: (bool? value) {
-                onChangeIsDone(todo.id);
+                onChangeIsDone(todo);
               },
             )),
         trailing: Container(

@@ -20,16 +20,15 @@ class _TodoPageState extends State<TodoPage> {
   void initState() {
     super.initState();
 
-    widget.todoRepository.todoStream.listen(_refresh);
+    // Todo一覧の監視
+    widget.todoRepository.todoStream.listen(_refreshTodos);
 
-    () async {
-      _refresh(await widget.todoRepository.findTodos());
-    }();
+    Future(() async {
+      _refreshTodos(await widget.todoRepository.findTodos());
+    });
   }
 
-  void _refresh(List<Todo> todos) {
-    if (!mounted) return;
-
+  void _refreshTodos(List<Todo> todos) {
     setState(() {
       _todos
         ..clear()
@@ -39,17 +38,18 @@ class _TodoPageState extends State<TodoPage> {
 
   Future<void> _addTodo(String todoName) async {
     await widget.todoRepository.addTodo(todoName);
+
+    setState(() {
+      _controller.clear();
+    });
   }
 
   Future<void> _deleteTodo(int id) async {
     await widget.todoRepository.deleteTodo(id);
   }
 
-  void _changeIsDone(int id) {
-    setState(() {
-      Todo todo = _todos.singleWhere((todo) => todo.id == id);
-      todo.isDone = !todo.isDone;
-    });
+  Future<void> _changeIsDone(Todo todo) async {
+    await widget.todoRepository.updateTodo(todo, !todo.isDone);
   }
 
   @override

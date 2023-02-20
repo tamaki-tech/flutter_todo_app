@@ -15,31 +15,18 @@ class TodoRepository {
   final Isar isar;
 
   final _todoController = StreamController<List<Todo>>.broadcast();
+
+  /// ToDo Stream getter
   Stream<List<Todo>> get todoStream => _todoController.stream;
 
-  void dispose() {
-    _todoController.close();
-  }
-
-  /// Todo取得
+  /// ToDo一覧取得
   FutureOr<List<Todo>> findTodos() async {
-    if (!isar.isOpen) {
-      return [];
-    }
-
     final builder = isar.todos.where();
-
-    final todos = builder.findAll();
-
-    return todos;
+    return builder.findAll();
   }
 
   /// ToDo追加
   FutureOr<void> addTodo(String name) {
-    if (!isar.isOpen) {
-      return Future<void>(() {});
-    }
-
     final newTodo = Todo()..name = name;
 
     return isar.writeTxn(() async {
@@ -49,12 +36,17 @@ class TodoRepository {
 
   /// ToDo削除
   FutureOr<bool> deleteTodo(int id) {
-    if (!isar.isOpen) {
-      return false;
-    }
-
     return isar.writeTxn(() {
       return isar.todos.delete(id);
+    });
+  }
+
+  /// ToDo更新
+  FutureOr<void> updateTodo(Todo todo, bool isDone) {
+    todo.isDone = isDone;
+
+    return isar.writeTxn(() async {
+      await isar.todos.put(todo);
     });
   }
 }
