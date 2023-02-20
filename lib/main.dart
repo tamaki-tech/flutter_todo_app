@@ -11,7 +11,5 @@ void main() async {
   final dir = await getApplicationSupportDirectory();
   final isar = await Isar.open([TodoSchema], directory: dir.path);
 
-  runApp(App(
-    isar: isar,
-  ));
+  runApp(App(isar: isar));
 }
